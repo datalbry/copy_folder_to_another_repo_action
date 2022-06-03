@@ -17,6 +17,11 @@ fi
 CLONE_DIR=$(mktemp -d)
 
 echo "Cloning destination git repository"
+chmod -R a+w /github/workspace
+chmod -R a+w /__w
+git config --global --add safe.directory /github/workspace
+git config --global --add safe.directory /__w
+
 git config --global user.email "$INPUT_USER_EMAIL"
 git config --global user.name "$INPUT_USER_NAME"
 git clone --single-branch --branch $INPUT_DESTINATION_BRANCH "https://$API_TOKEN_GITHUB@github.com/$INPUT_DESTINATION_REPO.git" "$CLONE_DIR"
