@@ -1,5 +1,7 @@
-# Copy Folder to another Repository
-This GitHub Action copies a folder from the current repository to a location in another repository.
+v0.0.0
+
+# Copy globbed files to another Repository
+This GitHub Action copies a glob matched files from the current repository to a location in another repository.
 The action takes care to create the directory, if not yet present.
 
 # Example Workflow

@@ -1,0 +1,53 @@
+name: git tag and release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tagrelease:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout and load release content
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'  
+    - name: login as a robot
+      run: |
+        # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+        git --version
+        git config user.name "GitHub Actions Bot"
+        git config user.email "<>"
+        git status
+    - name: tag that commit, push that tag
+      run: |
+        githubjson=$(cat ./RELEASE.json)
+        echo "RELEASE.json object: $githubjson"
+        version=`echo $(jq -r '.version' <<< "$githubjson")`
+        echo "version: $version"
+        git tag -f $version $GITHUB_SHA
+        git push origin -f --tags
+        
+    - name: purge existing release with tag
+      run: |
+        githubjson=$(cat ./RELEASE.json)
+        echo "RELEASE.json object: $githubjson"
+        version=`echo $(jq -r '.version' <<< "$githubjson")`
+        echo "version: $version"
+        gh release delete $version
+      continue-on-error: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: release the new version
+      run: |
+        githubjson=$(cat ./RELEASE.json)
+        echo "RELEASE.json object: $githubjson"
+        version=`echo $(jq -r '.version' <<< "$githubjson")`
+        echo "version: $version"
+        codename=`echo $(jq -r '.codename' <<< "$githubjson")`
+        echo "codename: $codename"
+        gh release create $version -t "$version $codename" -F ./RELEASE.md
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
