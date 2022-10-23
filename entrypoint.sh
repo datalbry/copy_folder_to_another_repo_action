@@ -3,9 +3,9 @@
 set -e
 set -x
 
-if [ -z "$INPUT_SOURCE_FOLDER" ]
+if [ -z "$INPUT_GLOB" ]
 then
-  echo "Source folder must be defined"
+  echo "Glob must be defined"
   return 1
 fi
 
@@ -37,7 +37,9 @@ echo "Copying contents to git repo"
 # shellcheck disable=SC2115
 rm -rf "$CLONE_DIR/$INPUT_DESTINATION_FOLDER/"
 mkdir -p "$CLONE_DIR/$INPUT_DESTINATION_FOLDER/"
-cp -a "$INPUT_SOURCE_FOLDER/." "$CLONE_DIR/$INPUT_DESTINATION_FOLDER/"
+for f in "$INPUT_GLOB"; do
+  cp -a "$f" "$CLONE_DIR/$INPUT_DESTINATION_FOLDER/"
+done
 cd "$CLONE_DIR"
 
 echo "Adding git commit"
