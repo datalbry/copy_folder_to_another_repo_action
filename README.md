@@ -1,4 +1,4 @@
-v0.0.1
+v0.0.2
 
 # Copy globbed files to another Repository
 This GitHub Action copies a glob matched files from the current repository to a location in another repository.
