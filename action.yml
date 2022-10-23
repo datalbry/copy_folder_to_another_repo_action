@@ -1,8 +1,8 @@
 name: 'Push a directory to another repository'
 description: 'Used for pushing a copy of a folder to another repository'
 inputs:
-  source_folder:
-    description: 'Source folder from the origin directory'
+  glob:
+    description: 'Glob for pushing multiple files from source repo'
     required: true
   destination_repo:
     description: 'Destination repository'
@@ -29,7 +29,7 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.source-file }}
+    - ${{ inputs.glob }}
     - ${{ inputs.destination-repo }}
     - ${{ inputs.destination-folder }}
     - ${{ inputs.user-email }}
