@@ -37,4 +37,4 @@ The action takes care to create the directory, if not yet present.
 * **commit_msg:** [optional] The commit message to use.
 
 # Behavior Notes
-The action will remove the destionation folder before recreating it to place any copied files in it.
+The action will remove the destination folder before recreating it to place any copied files in it.
